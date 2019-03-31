@@ -23,14 +23,16 @@ function processBalanceBoardData(data) {
   }
 }
 
+module.exports = BalanceBoard;
+
 //Try to connect to the balance board and recieve data. The sync button has to be pressed to connect to the board
-BalanceBoard.connect = function() {
+module.exports.connect = function() {
   BoardListener = spawn("python", ["boardListener.py"]);
   BoardListener.stdout.on("data", processBalanceBoardData);
 };
 
 //Stop trying to connect to the balance board
-BalanceBoard.disconnect = function() {
+module.exports.disconnect = function() {
   if (BoardListener != null) {
     BoardListener.stdin.pause();
     BoardListener.kill();
@@ -39,8 +41,6 @@ BalanceBoard.disconnect = function() {
 };
 
 //Check if the balance board is currently connected
-BalanceBoard.isConnected = function() {
+module.exports.isConnected = function() {
   return boardConnected;
 };
-
-module.exports = BalanceBoard;

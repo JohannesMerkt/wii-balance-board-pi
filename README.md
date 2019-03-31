@@ -6,7 +6,7 @@ This node module aims to make recieving data from the wii balance board with the
 
 ### Prerequisites
 
-- Raspberry PI Stretch (It has only been tested on this device)
+- Raspberry PI Stretch
 - Wii Balance Board
 
 ### Installation
@@ -24,6 +24,28 @@ npm i -s wii-balance-board-pi
 ```
 
 ## Basic Usage
+
+```
+var BalanceBoard = require("wii-balance-board-pi");
+
+BalanceBoard.connect();
+
+BalanceBoard.on("data", data => {
+  console.log(data);
+});
+```
+
+To check if connected
+
+```
+BalanceBoard.isConnected();
+```
+
+To disconnect
+
+```
+BalanceBoard.disconnect();
+```
 
 ## TODO
 
