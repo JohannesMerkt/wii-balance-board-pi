@@ -1,6 +1,6 @@
 {
   "name": "wii-balance-board-pi",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Recieve data from the wii balance board via bluetooth using the raspberry pi",
   "main": "index.js",
   "scripts": {
