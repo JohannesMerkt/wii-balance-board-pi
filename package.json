@@ -1,10 +1,14 @@
 {
   "name": "wii-balance-board-pi",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Recieve data from the wii balance board via bluetooth using the raspberry pi",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JohannesMerkt/wii-balance-board-pi.git"
   },
   "keywords": [
     "wii",

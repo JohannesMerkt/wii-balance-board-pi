@@ -3,6 +3,7 @@ const spawn = require("child_process").spawn;
 
 module.exports = class BalanceBoard extends EventEmitter {
   constructor() {
+    super();
     //Python code that tries to connect to balance board and recieves its data when connected
     this.boardListener = null;
     this.boardConnected = false;
