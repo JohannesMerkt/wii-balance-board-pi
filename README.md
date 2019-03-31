@@ -31,7 +31,7 @@ sudo reboot
 
 ## Basic Usage
 
-```
+```javascript
 var BalanceBoard = require("wii-balance-board-pi");
 
 BalanceBoard.connect();
@@ -41,19 +41,47 @@ BalanceBoard.on("data", data => {
 });
 ```
 
-To check if connected
+## Documentation
 
-```
-BalanceBoard.isConnected();
+Overview over all functions available with this package. Additionally the BalanceBoard class also extends EventEmitter.
+
+### BalanceBoard.connect()
+
+Tries to continuously connect to the wii balance board. It will only be able to connect when the sync button is pressed. When the connection is lost it will keep trying to reconnect.
+
+When connected BalanceBoard.on("data", (data) =>{}) will send data events from the wii balanceboard.
+
+### BalanceBoard.on("data",(data) => {})
+
+Once connected to the wii balance board data events can be recieved with this event emitter.
+
+The data object will have these fields:
+
+```javascript
+{
+    topLeft: float, //weight in kg on the top left corner of the board
+    topRight: float,
+    bottomLeft: float,
+    bottomRight: float,
+    totalWeight: float,
+    buttonPressed: boolean,
+    buttonReleased: boolean
+}
 ```
 
-To disconnect
+### BalanceBoard.removeListener("data",(data) => {})
 
-```
-BalanceBoard.disconnect();
-```
+Call this function to stop listening to incomming data.
+For more detail: https://nodejs.org/api/events.html#events_emitter_removelistener_eventname_listener
+
+### BalanceBoard.isConnected()
+
+This function returns a boolean on if the wii balance board is connected.
+
+### BalanceBoard.disconnect()
+
+When called wii balance board will be disconnected and no connection will be established until BalanceBoard.connect() is called again.
 
 ## TODO
 
 - make JSON.parse always successful so the try catch isnt necessary anymore
-- better documentation
