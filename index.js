@@ -24,6 +24,7 @@ module.exports = class BalanceBoard extends EventEmitter {
         } else {
           //Balance board is disconnected
           this.boardConnected = false;
+          this.emit("data", balanceBoardFrame);
         }
       } catch (error) {
         //JSON.parse isnt always successful as a easy fix we catch these cases here

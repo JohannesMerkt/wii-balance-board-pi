@@ -17,10 +17,10 @@ Install the module with
 npm i -s wii-balance-board-pi
 ```
 
-Run the setup with:
+Make sure bluetooth is installed with:
 
 ```
-npm explore wii-balance-board-pi -- npm run setup
+sudo apt-get --assume-yes install bluez python-bluez python-gobject python-dbus
 ```
 
 I suggest to do a reboot now
@@ -32,11 +32,13 @@ sudo reboot
 ## Basic Usage
 
 ```javascript
-var BalanceBoard = require("wii-balance-board-pi");
+const BalanceBoard = require("wii-balance-board-pi");
 
-BalanceBoard.connect();
+var balanceBoard = new BalanceBoard();
 
-BalanceBoard.on("data", data => {
+balanceBoard.connect();
+
+balanceBoard.on("data", data => {
   console.log(data);
 });
 ```
@@ -59,6 +61,8 @@ The data object will have these fields:
 
 ```javascript
 {
+    connected: boolean,
+    //All below only when connected is true
     topLeft: float, //weight in kg on the top left corner of the board
     topRight: float,
     bottomLeft: float,
