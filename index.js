@@ -42,7 +42,6 @@ module.exports = class BalanceBoard extends EventEmitter {
       }
     } catch (error) {
       //JSON.parse isnt always successful as a easy fix we catch these cases here
-      return;
     }
   }
 };
