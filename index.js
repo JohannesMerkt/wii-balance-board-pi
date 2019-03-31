@@ -11,13 +11,31 @@ module.exports = class BalanceBoard extends EventEmitter {
 
   //Try to connect to the balance board and recieve data. The sync button has to be pressed to connect to the board
   connect() {
+    console.log("Connecting");
     this.boardListener = spawn("python", ["boardListener.py"]);
-    this.boardListener.stdout.on("data", this.processBalanceBoardData);
+    this.boardListener.stdout.on("data", data => {
+      console.log("Getting Data");
+      console.log(data.toString());
+      try {
+        var balanceBoardFrame = JSON.parse(data.toString());
+        if (balanceBoardFrame.connected) {
+          //Recieved data from connected balance board
+          this.boardConnected = true;
+          this.emit("data", balanceBoardFrame);
+        } else {
+          //Balance board is disconnected
+          this.boardConnected = false;
+        }
+      } catch (error) {
+        //JSON.parse isnt always successful as a easy fix we catch these cases here
+      }
+    });
   }
 
   //Stop trying to connect to the balance board
   disconnect() {
     if (this.boardListener != null) {
+      this.boardListener.stdout.removeAllListeners("data");
       this.boardListener.stdin.pause();
       this.boardListener.kill();
       this.boardListener = null;
@@ -27,21 +45,5 @@ module.exports = class BalanceBoard extends EventEmitter {
   //Check if the balance board is currently connected
   isConnected() {
     return this.boardConnected;
-  }
-
-  processBalanceBoardData(data) {
-    try {
-      var balanceBoardFrame = JSON.parse(data.toString());
-      if (balanceBoardFrame.connected) {
-        //Recieved data from connected balance board
-        this.boardConnected = true;
-        this.emit("data", balanceBoardFrame);
-      } else {
-        //Balance board is disconnected
-        this.boardConnected = false;
-      }
-    } catch (error) {
-      //JSON.parse isnt always successful as a easy fix we catch these cases here
-    }
   }
 };
