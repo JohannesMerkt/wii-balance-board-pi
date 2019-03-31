@@ -17,6 +17,10 @@ Run to make sure this module can use the bluetooth of the pi
 sudo apt-get install bluez python-bluez python-gobject python-dbus
 ```
 
+```
+sudo reboot
+```
+
 Now install the module with
 
 ```
