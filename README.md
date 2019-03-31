@@ -6,25 +6,27 @@ This node module aims to make recieving data from the wii balance board with the
 
 ### Prerequisites
 
-- Raspberry PI Stretch
+- Raspberry PI
 - Wii Balance Board
 
 ### Installation
 
-Run to make sure this module can use the bluetooth of the pi
-
-```
-sudo apt-get install bluez python-bluez python-gobject python-dbus
-```
-
-```
-sudo reboot
-```
-
-Now install the module with
+Install the module with
 
 ```
 npm i -s wii-balance-board-pi
+```
+
+Run the setup with:
+
+```
+npm explore wii-balance-board-pi -- npm run setup
+```
+
+I suggest to do a reboot now
+
+```
+sudo reboot
 ```
 
 ## Basic Usage
@@ -54,3 +56,4 @@ BalanceBoard.disconnect();
 ## TODO
 
 - make JSON.parse always successful so the try catch isnt necessary anymore
+- better documentation

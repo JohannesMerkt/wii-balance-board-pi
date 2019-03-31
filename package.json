@@ -1,10 +1,11 @@
 {
   "name": "wii-balance-board-pi",
-  "version": "1.0.9",
+  "version": "1.1.0",
   "description": "Recieve data from the wii balance board via bluetooth using the raspberry pi",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "setup": "sudo apt-get --assume-yes install bluez python-bluez python-gobject python-dbus"
   },
   "repository": {
     "type": "git",
