@@ -17,5 +17,8 @@
     "bluetooth"
   ],
   "author": "Johannes Merkt",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "events": "^3.0.0"
+  }
 }
