@@ -17,6 +17,12 @@ Install the module with
 npm i -s wii-balance-board-pi
 ```
 
+Install python 2.7:
+
+```
+sudo apt-get --assume-yes install python2.7
+```
+
 Make sure bluetooth is installed with:
 
 ```

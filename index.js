@@ -11,7 +11,7 @@ module.exports = class BalanceBoard extends EventEmitter {
 
   //Try to connect to the balance board and recieve data. The sync button has to be pressed to connect to the board
   connect() {
-    this.boardListener = spawn("python", ["boardListener.py"], {
+    this.boardListener = spawn("python2.7", ["boardListener.py"], {
       cwd: __dirname
     });
     this.boardListener.stdout.on("data", data => {
