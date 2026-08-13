@@ -1,40 +1,49 @@
-# Wii Balance Board PI
+# Wii Balance Board Pi
 
-This node module aims to make recieving data from the wii balance board with the raspberry pi as easy as possible. It tries to connect to the balance board via bluetooth an retrieves its data once connected.
+A Node.js module for reading data from the Nintendo Wii Balance Board over Bluetooth on a Raspberry Pi.
 
-## Getting Started
+It spawns a small Python helper ([`boardListener.py`](boardListener.py)) that handles the low-level Bluetooth connection and streams weight readings back as JSON. Your Node.js code simply listens for `data` events.
 
-### Prerequisites
+## Requirements
 
-- Raspberry PI
-- Wii Balance Board
+- Raspberry Pi (or any Linux machine with Bluetooth)
+- A Nintendo Wii Balance Board
+- [Node.js](https://nodejs.org/) and Python 2 with Bluetooth support
 
-### Installation
+> **Note:** `boardListener.py` is written in Python 2 (it uses `xrange`, `decode("hex")`, and `print` statements). Make sure `python` resolves to Python 2 on your system.
 
-Install the module with
+## Installation
 
+Install the module:
+
+```sh
+npm install wii-balance-board-pi
 ```
-npm i -s wii-balance-board-pi
-```
 
-Make sure bluetooth is installed with:
+Install the Bluetooth system packages:
 
-```
+```sh
 sudo apt-get --assume-yes install bluez python-bluez python-gobject python-dbus
 ```
 
-I suggest to do a reboot now
+You can also run the bundled setup script instead:
 
+```sh
+npm run setup
 ```
+
+A reboot is recommended after installing the Bluetooth packages:
+
+```sh
 sudo reboot
 ```
 
-## Basic Usage
+## Quick start
 
-```javascript
+```js
 const BalanceBoard = require("wii-balance-board-pi");
 
-var balanceBoard = new BalanceBoard();
+const balanceBoard = new BalanceBoard();
 
 balanceBoard.connect();
 
@@ -43,49 +52,54 @@ balanceBoard.on("data", data => {
 });
 ```
 
-## Documentation
+To pair the board, press the red **sync button** (under the battery cover) while `connect()` is trying to establish a connection.
 
-Overview over all functions available with this package. Additionally the BalanceBoard class also extends EventEmitter.
+## Data format
 
-### BalanceBoard.connect()
+Each `data` event receives an object with the following shape:
 
-Tries to continuously connect to the wii balance board. It will only be able to connect when the sync button is pressed. When the connection is lost it will keep trying to reconnect.
-
-When connected BalanceBoard.on("data", (data) =>{}) will send data events from the wii balanceboard.
-
-### BalanceBoard.on("data",(data) => {})
-
-Once connected to the wii balance board data events can be recieved with this event emitter.
-
-The data object will have these fields:
-
-```javascript
+```js
 {
-    connected: boolean,
-    //All below only when connected is true
-    topLeft: float, //weight in kg on the top left corner of the board
-    topRight: float,
-    bottomLeft: float,
-    bottomRight: float,
-    totalWeight: float,
-    buttonPressed: boolean,
-    buttonReleased: boolean
+  connected: false
+}
+
+// when connected:
+{
+  connected: true,
+  topLeft: 12.5,      // weight in kg on the top-left corner
+  topRight: 12.5,     // weight in kg on the top-right corner
+  bottomLeft: 12.5,   // weight in kg on the bottom-left corner
+  bottomRight: 12.5,  // weight in kg on the bottom-right corner
+  totalWeight: 50.0,  // sum of the four corners
+  buttonPressed: false,
+  buttonReleased: false
 }
 ```
 
-### BalanceBoard.removeListener("data",(data) => {})
+## API
 
-Call this function to stop listening to incomming data.
-For more detail: https://nodejs.org/api/events.html#events_emitter_removelistener_eventname_listener
+`BalanceBoard` extends [`EventEmitter`](https://nodejs.org/api/events.html).
 
-### BalanceBoard.isConnected()
+### `connect()`
 
-This function returns a boolean on if the wii balance board is connected.
+Starts trying to connect to the board and keeps retrying if the connection is lost. The board will only connect while its sync button is pressed. Once connected, it emits `data` events.
 
-### BalanceBoard.disconnect()
+### `disconnect()`
 
-When called wii balance board will be disconnected and no connection will be established until BalanceBoard.connect() is called again.
+Stops the connection and halts all further attempts until `connect()` is called again.
 
-## TODO
+### `isConnected()`
 
-- make JSON.parse always successful so the try catch isnt necessary anymore
+Returns `true` when the board is currently connected, otherwise `false`.
+
+### `on("data", callback)`
+
+Registers a listener for incoming `data` events (see [Data format](#data-format)).
+
+### `removeListener("data", callback)`
+
+Stops the given listener from receiving `data` events. See the [Node.js docs](https://nodejs.org/api/events.html#events_emitter_removelistener_eventname_listener) for details.
+
+## License
+
+[ISC](LICENSE)
